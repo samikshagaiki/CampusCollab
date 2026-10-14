@@ -1,8 +1,10 @@
+
 package com.campuscollab.security;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,8 +22,8 @@ import com.nimbusds.jose.jwk.source.ImmutableSecret;
 @Configuration
 public class SecurityConfig {
 
-    private static final String JWT_SECRET =
-            "campuscollab-secret-key-change-this-later-123456789";
+    @Value("${app.jwt.secret}")
+    private String jwtSecret;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -31,7 +33,7 @@ public class SecurityConfig {
     @Bean
     public SecretKey jwtSecretKey() {
         return new SecretKeySpec(
-                JWT_SECRET.getBytes(),
+                jwtSecret.getBytes(java.nio.charset.StandardCharsets.UTF_8),
                 "HmacSHA256"
         );
     }
@@ -57,7 +59,6 @@ public class SecurityConfig {
 
         http
             .csrf(csrf -> csrf.disable())
-
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                     "/api/health",
@@ -66,11 +67,9 @@ public class SecurityConfig {
                 ).permitAll()
                 .anyRequest().authenticated()
             )
-
             .formLogin(form -> form.disable())
-
             .oauth2ResourceServer(
-            	    oauth2 -> oauth2.jwt(jwt -> {})
+                oauth2 -> oauth2.jwt(jwt -> {})
             );
 
         return http.build();

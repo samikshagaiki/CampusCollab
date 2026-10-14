@@ -1,5 +1,5 @@
 package com.campuscollab.controller;
-
+import jakarta.validation.Valid;
 import java.util.List;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,11 +23,8 @@ public class SkillController {
     @PostMapping
     public SkillResponse addSkill(
             @AuthenticationPrincipal Jwt jwt,
-            @RequestBody SkillRequest request) {
-
-        String email = jwt.getSubject();
-
-        return skillService.addSkill(email, request);
+            @Valid @RequestBody SkillRequest request) {
+        return skillService.addSkill(jwt.getSubject(), request);
     }
 
     @GetMapping("/me")

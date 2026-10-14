@@ -1,5 +1,5 @@
 package com.campuscollab.controller;
-
+import jakarta.validation.Valid;
 import java.util.List;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,17 +23,12 @@ public class CollaborationOpportunityController {
     }
 
     @PostMapping
-    public OpportunityResponse createOpportunity(
-            @AuthenticationPrincipal Jwt jwt,
-            @RequestBody OpportunityRequest request) {
-
-        String email = jwt.getSubject();
-
-        return opportunityService.createOpportunity(
-                email,
-                request
-        );
-    }
+public OpportunityResponse createOpportunity(
+        @AuthenticationPrincipal Jwt jwt,
+        @Valid @RequestBody OpportunityRequest request) {
+    return opportunityService.createOpportunity(
+            jwt.getSubject(), request);
+}
 
     @GetMapping
     public List<OpportunityResponse> getOpenOpportunities() {

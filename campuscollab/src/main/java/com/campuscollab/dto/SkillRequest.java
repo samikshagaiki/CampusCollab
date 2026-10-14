@@ -1,12 +1,27 @@
 package com.campuscollab.dto;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Pattern;
 
 import com.campuscollab.entity.SkillType;
 
 public class SkillRequest {
 
-    private String skillName;
-    private SkillType type;
-    private Integer proficiency;
+	@NotBlank(message = "Skill name is required")
+	@Size(max = 100, message = "Skill name must not exceed 100 characters")
+	private String skillName;
+
+	@NotNull(message = "Skill type is required")
+	private SkillType type;
+
+	@NotNull(message = "Proficiency is required")
+	@Min(value = 1, message = "Proficiency must be between 1 and 5")
+	@Max(value = 5, message = "Proficiency must be between 1 and 5")
+	private Integer proficiency;	
+
 
     public SkillRequest() {
     }

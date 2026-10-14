@@ -1,4 +1,5 @@
 package com.campuscollab.controller;
+import jakarta.validation.Valid;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -20,14 +21,11 @@ public class ProfileController {
     }
 
     @PostMapping
-    public ProfileResponse createProfile(
-            @AuthenticationPrincipal Jwt jwt,
-            @RequestBody ProfileRequest request) {
-
-        String email = jwt.getSubject();
-
-        return profileService.createProfile(email, request);
-    }
+public ProfileResponse createProfile(
+        @AuthenticationPrincipal Jwt jwt,
+        @Valid @RequestBody ProfileRequest request) {
+    return profileService.createProfile(jwt.getSubject(), request);
+}
     
     @GetMapping("/me")
     public ProfileResponse getProfile(
@@ -39,12 +37,9 @@ public class ProfileController {
     }
     
     @PutMapping("/me")
-    public ProfileResponse updateProfile(
-            @AuthenticationPrincipal Jwt jwt,
-            @RequestBody ProfileRequest request) {
-
-        String email = jwt.getSubject();
-
-        return profileService.updateProfile(email, request);
-    }
+public ProfileResponse updateProfile(
+        @AuthenticationPrincipal Jwt jwt,
+        @Valid @RequestBody ProfileRequest request) {
+    return profileService.updateProfile(jwt.getSubject(), request);
+}
 }

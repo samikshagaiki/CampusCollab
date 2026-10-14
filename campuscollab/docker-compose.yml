@@ -1,3 +1,4 @@
+
 services:
   postgres:
     image: postgres:17
@@ -10,6 +11,17 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: .
+    container_name: campuscollab-backend
+    ports:
+      - "8086:8086"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      JWT_SECRET: ${JWT_SECRET}
+    depends_on:
+      - postgres
 
 volumes:
   postgres_data:

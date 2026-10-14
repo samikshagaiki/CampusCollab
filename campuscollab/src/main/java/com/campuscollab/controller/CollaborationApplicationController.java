@@ -1,4 +1,5 @@
 package com.campuscollab.controller;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -26,15 +27,9 @@ public class CollaborationApplicationController {
     public ApplicationResponse apply(
             @AuthenticationPrincipal Jwt jwt,
             @PathVariable Long opportunityId,
-            @RequestBody ApplicationRequest request) {
-
-        String email = jwt.getSubject();
-
+            @Valid @RequestBody ApplicationRequest request) {
         return applicationService.apply(
-                email,
-                opportunityId,
-                request
-        );
+                jwt.getSubject(), opportunityId, request);
     }
 
     @GetMapping("/me")

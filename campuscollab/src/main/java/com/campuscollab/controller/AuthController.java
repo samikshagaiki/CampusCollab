@@ -1,4 +1,5 @@
 package com.campuscollab.controller;
+import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +22,14 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public User register(@RequestBody RegisterRequest request) {
+    public User register(
+            @Valid @RequestBody RegisterRequest request) {
         return authService.register(request);
     }
-    
-    
+
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest request) {
+    public LoginResponse login(
+            @Valid @RequestBody LoginRequest request) {
         return authService.login(request);
     }
     
